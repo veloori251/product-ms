@@ -3,23 +3,28 @@ server:
 spring:
   application:
     name: product-ms
-  datasource:
-    url: jdbc:h2:mem:productdb
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
 
-  h2:
-    console:
-      enabled: true
-      path: "/h2-console"
+  datasource:
+    url: jdbc:postgresql://localhost:5435/${db.name:productdb}
+    username: ${db.username}
+    password: ${db.password}
+    driver-class-name: org.postgresql.Driver
+
+  cache:
+    type: CAFFEINE
+
   jpa:
     hibernate:
-      ddl-auto: 'create-drop'
-    show-sql: true
-    database-platform: org.hibernate.dialect.H2Dialect
-    defer-datasource-initialization: true
+      ddl-auto: 'update'
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
         format_sql: true
+  output:
+    ansi:
+      enabled: ALWAYS
+logging:
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr([%X{correlationId}]){blue} %clr(%-5level) %clr(%logger{36}){cyan} - %msg%n"
 

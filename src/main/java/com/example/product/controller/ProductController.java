@@ -6,8 +6,10 @@ import com.example.product.dto.ProductResponse;
 import com.example.product.dto.Response;
 import com.example.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/product")
 @RequiredArgsConstructor
+@Slf4j
 public class ProductController {
 
 
@@ -24,6 +27,7 @@ public class ProductController {
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<ProductResponse>> createProduct(@Validated @RequestBody ProductRequest request){
+        log.info("Product received with sku: {} ",request.sku());
         Response<ProductResponse> response = productService.createProduct(request);
         ApiResponse<ProductResponse> apiResponse = new ApiResponse<>(
                 response.content(),
@@ -41,6 +45,7 @@ public class ProductController {
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "createdAt") String sortBy,
             @RequestParam(defaultValue = "desc") String direction) {
+        log.info("Fetch products request received. Page: {}, Size: {}, SortBy: {}, direction:{} ",page,size,sortBy,direction);
         Response<List<ProductResponse>> productResponses = productService.getProductAllProducts(page,size,sortBy,direction);
         ApiResponse<List<ProductResponse>> response = new ApiResponse<>(
                 productResponses.content(),
@@ -54,6 +59,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<ProductResponse>> getProductById(@PathVariable String id){
+        log.info("Fetch product request received for id: {} ",id);
         Response<ProductResponse> productResponse = productService.getProductById(id);
         ApiResponse<ProductResponse> response = new ApiResponse<>(
                 productResponse.content(),
@@ -67,6 +73,7 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteProduct(@PathVariable String id){
+        log.info("Delete request received for id: {} ",id);
         productService.deleteProduct(id);
         ApiResponse<Void> apiResponse = new ApiResponse<>(
                 null,
@@ -81,6 +88,7 @@ public class ProductController {
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<ProductResponse>> updateProduct(@PathVariable String id
             , @RequestBody ProductRequest request){
+        log.info("Update request received for id: {}",id);
         Response<ProductResponse> productResponse = productService.updateProduct(id,request);
         ApiResponse<ProductResponse> response = new ApiResponse<>(
                 productResponse.content(),

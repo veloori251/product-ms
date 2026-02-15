@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: product-service
+  cloud:
+    vault:
+      uri: http://localhost:8200
+      authentication: TOKEN
+      token: ${VAULT_TOKEN}
+      kv:
+        enabled: true
+
+
