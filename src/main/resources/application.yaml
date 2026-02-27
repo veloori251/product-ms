@@ -5,10 +5,15 @@ spring:
     name: product-ms
 
   datasource:
-    url: jdbc:postgresql://localhost:5435/${db.name:productdb}
-    username: ${db.username}
-    password: ${db.password}
+    url: ${database-url}
+    username: ${db-username}
+    password: ${db-password}
     driver-class-name: org.postgresql.Driver
+
+  security:
+    user:
+      name: false
+      password: false
 
   cache:
     type: CAFFEINE
@@ -24,6 +29,11 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+      
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    time-format: iso
 logging:
   pattern:
     console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr([%X{correlationId}]){blue} %clr(%-5level) %clr(%logger{36}){cyan} - %msg%n"

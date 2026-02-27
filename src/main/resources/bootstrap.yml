@@ -8,5 +8,7 @@ spring:
       token: ${VAULT_TOKEN}
       kv:
         enabled: true
+  config:
+    import: vault://secret/product-service,vault://secret/global
 
 
